@@ -1,26 +1,23 @@
 const header = document.querySelector('header');
-const main = document.querySelector('main');
+let lastScrollY = window.scrollY;
+let ticking = false;
 
-// Agrega un evento de desplazamiento a la ventana
-window.addEventListener('scroll', function() {
-    // Verifica si el desplazamiento vertical es mayor a 50px desde la parte superior
-    if (window.scrollY > 60) {
-        // Si es así, agrega la clase 'scrolled' al encabezado
-        header.classList.add('scrolled');
+function onScroll() {
+    const currentScrollY = window.scrollY;
+
+    if (currentScrollY > 120) {
+        header.classList.add('fixed');
     } else {
-        // Si no, elimina la clase 'scrolled'
-        header.classList.remove('scrolled');
+        header.classList.remove('fixed');
     }
-});
 
-// Agrega un evento de desplazamiento a la ventana
+    lastScrollY = currentScrollY;
+    ticking = false;
+}
+
 window.addEventListener('scroll', function() {
-    // Verifica si el desplazamiento vertical es mayor a 50px desde la parte superior
-    if (window.scrollY > 60) {
-        // Si es así, agrega la clase 'scrolled' a main
-        main.classList.add('scrolled-padding');
-    } else {
-        // Si no, elimina la clase 'scrolled-padding'
-        main.classList.remove('scrolled-padding');
+    if (!ticking) {
+        window.requestAnimationFrame(onScroll);
+        ticking = true;
     }
 });
